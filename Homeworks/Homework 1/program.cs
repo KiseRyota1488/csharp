@@ -138,6 +138,7 @@ namespace Program
 			
 			//4
 			
+			/*
 			string key;
 			
 			Planets pl;
@@ -158,7 +159,7 @@ namespace Program
 			
 			
 			}while(key != 10);
-			
+			*/
 			
 			
 			Console.ReadKey();
