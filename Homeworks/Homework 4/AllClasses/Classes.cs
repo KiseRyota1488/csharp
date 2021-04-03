@@ -5,9 +5,24 @@ namespace AllClasses
 {
     public abstract class Unit
     {
-        public int Hp { get; set; }
+        int hp;
+        public int Hp
+        {
+            get
+            {
+                return hp;
+            }
+            set
+            {
+                if ((hp = value) < 0)
+                    hp = 0;
+                else
+                    hp = value;
+            }
+        }
         public int Damage { get; set; }
         public int EvadeChance { get; set; }
+        public bool IsDead { get; set; } = false;
 
         public Unit()
         {
@@ -16,7 +31,7 @@ namespace AllClasses
 
     }
 
-    class Swordman : Unit
+    public class Swordman : Unit
     {
         public Swordman()
         {
@@ -25,7 +40,7 @@ namespace AllClasses
             EvadeChance = 30;
         }
     }
-    class Archer : Unit
+    public class Archer : Unit
     {
         public Archer()
         {
