@@ -2,8 +2,6 @@
 using AllClasses;
 using System.Collections.Generic;
 
-//змінити функції chooseenemy chooseattacker, зробити для низ змінні
-
 namespace PlaceOfBattle
 {
     class Program
