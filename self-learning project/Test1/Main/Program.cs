@@ -2,18 +2,28 @@
 
 namespace Main
 {
+    interface IB
+    {
+        public void Move();
+    }
     class Program
     {
-        delegate void B();
+        
         static void Main(string[] args)
         {
+
+
 
         }
 
     }
 
-    class Team
+    class Team : IB
     {
-
+        public int Age { get; set; }
+        public void Move()
+        {
+            Console.WriteLine("11");
+        }
     }
 }

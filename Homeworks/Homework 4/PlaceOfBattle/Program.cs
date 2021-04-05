@@ -8,12 +8,14 @@ namespace PlaceOfBattle
     {
         static void Main(string[] args)
         {
+
             Console.WriteLine($"\tPress Spacebar to start a battle | Esc to end end the battle!");
             int roundCounter = 0, whichTeamWon = 3;
             List<Unit> alliance = new List<Unit>();
             List<Unit> orcs = new List<Unit>();
 
             GenerateTeams(alliance, orcs);
+
 
             ConsoleKeyInfo pressedKey;
 
@@ -35,23 +37,14 @@ namespace PlaceOfBattle
                 
                 for (int i = 0; i < 3; i++)
                 {
-                    try
-                    {
+                    if(i < alliance.Count)
                         Console.Write($"{alliance[i].GetType().Name} HP:{alliance[i].Hp} Damage:{alliance[i].Damage}\t\t");
-                        
-                    }
-                    catch(ArgumentOutOfRangeException)
-                    {
+                    else
                         Console.Write("\t\t\t\t");
-                    }
-                    try
-                    {
+                    if (i < orcs.Count)
                         Console.WriteLine($"{orcs[i].GetType().Name} HP:{orcs[i].Hp} Damage:{orcs[i].Damage}");
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Console.WriteLine("\t\t\t");
-                    }
+                    else
+                        Console.Write("\t\t\t");
                 }
                     Console.WriteLine();
                 
