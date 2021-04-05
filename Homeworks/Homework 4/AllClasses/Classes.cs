@@ -14,15 +14,18 @@ namespace AllClasses
             }
             set
             {
-                if ((hp = value) < 0)
+                if ((hp = value) <= 0)
+                {
                     hp = 0;
+                    IsDead = true;
+                }
                 else
                     hp = value;
             }
         }
         public int Damage { get; set; }
         public int EvadeChance { get; set; }
-        public bool IsDead { get; set; } = false;
+        public bool IsDead { get; set; }
 
         public Unit()
         {
@@ -49,7 +52,7 @@ namespace AllClasses
             EvadeChance = 60;
         }
     }
-    class Mage : Unit
+    public class Mage : Unit
     {
         public Mage()
         {
@@ -58,31 +61,4 @@ namespace AllClasses
             EvadeChance = 40;
         }
     }
-    
-    
-    public class Team
-    {
-        public Unit Unit { get; set; }
-        public Team()
-        {
-            Random rnd = new Random();
-            int choice = rnd.Next(3);
-
-            switch (choice)
-            {
-                case 0:
-                    Unit = new Swordman();
-                    break;
-                case 1:
-                    Unit = new Archer();
-                    break;
-                case 2:
-                    Unit = new Mage();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
 }

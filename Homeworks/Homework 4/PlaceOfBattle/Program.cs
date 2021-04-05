@@ -1,8 +1,8 @@
 ﻿using System;
 using AllClasses;
 using System.Collections.Generic;
-using System.Threading;
 
+//змінити функції chooseenemy chooseattacker, зробити для низ змінні
 
 namespace PlaceOfBattle
 {
@@ -10,176 +10,229 @@ namespace PlaceOfBattle
     {
         static void Main(string[] args)
         {
-            int roundCounter = 0;
-            List<Team> alliance = new List<Team>() { new Team(), new Team(), new Team() };
-            List<Team> orcs = new List<Team>() { new Team(), new Team(), new Team() };
+            Console.WriteLine($"\tPress Spacebar to start a battle | Esc to end end the battle!");
+            int roundCounter = 0, whichTeamWon = 3;
+            List<Unit> alliance = new List<Unit>();
+            List<Unit> orcs = new List<Unit>();
+
+            GenerateTeams(alliance, orcs);
+
+            ConsoleKeyInfo pressedKey;
+
+            pressedKey = Console.ReadKey();
+            Console.Clear();
 
 
 
-            int teamLost;
-            while (!IsGameOver(alliance, orcs, out teamLost))
+            while (pressedKey.Key != ConsoleKey.Escape && pressedKey.Key == ConsoleKey.Spacebar && !IsGameOver(alliance, orcs, out whichTeamWon))
             {
+                Console.Clear();
+
+                
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("Team Alliance:");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\t\t\tTeam Ocrs:");
+                Console.ResetColor();
+                
+                for (int i = 0; i < 3; i++)
+                {
+                    try
+                    {
+                        Console.Write($"{alliance[i].GetType().Name} HP:{alliance[i].Hp} Damage:{alliance[i].Damage}\t\t");
+                        
+                    }
+                    catch(ArgumentOutOfRangeException)
+                    {
+                        Console.Write("\t\t\t\t");
+                    }
+                    try
+                    {
+                        Console.WriteLine($"{orcs[i].GetType().Name} HP:{orcs[i].Hp} Damage:{orcs[i].Damage}");
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("\t\t\t");
+                    }
+                }
+                    Console.WriteLine();
+                
                 OneMove(alliance, orcs, ref roundCounter);
-                UpdateHeroStatus(alliance, orcs);
                 RemoveDeadHeroes(alliance, orcs);
-                //Thread.Sleep(2000);
-            }
 
-            if (IsGameOver(alliance, orcs, out teamLost))
+                pressedKey = Console.ReadKey();
+            }
+                        
+            switch (whichTeamWon)
             {
-                if (teamLost == 1)
-                {
-                    ConsoleColor color = ConsoleColor.Green;
-                    Console.ForegroundColor = color;
-                    Console.WriteLine("Orcs won!");
-                }
-                if (teamLost == 2)
-                {
-
-                    ConsoleColor color = ConsoleColor.Cyan;
-                    Console.ForegroundColor = color;
-                    Console.WriteLine("Alliance won!");
-                }
-                if (teamLost == 0)
-                    Console.WriteLine("Draw, although it's better to say that everyone died!");
-
+                case 1:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\n\tAlliance won, gratz Warriors!!!");
+                    break;
+                case 2:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\n\tOrcs won, for Sauron!!!");
+                    break;
+                case 3:
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n\tEveryone dead,i wonder who will take all the swords home..");
+                    break;
+                default:
+                    break;
             }
 
-
+            Console.ResetColor();
         }
 
-        static void OneMove(List<Team> alliance, List<Team> orcs, ref int roundCounter)
+        static void OneMove(List<Unit> alliance, List<Unit> orcs, ref int roundCounter)
         {
             Random rnd = new Random();
-            int choiceAll = rnd.Next(alliance.Count), choiceOrc = rnd.Next(orcs.Count);
+            int choice, enemyId, allianceId, orcsId;
+
+            Unit enemy, warrior;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"\t\tRound: {roundCounter+1}");
+            Console.ResetColor();
 
             if (roundCounter % 2 == 0)
             {
-                if (HitEnemy(ChooseAttacker(alliance, choiceAll), ChooseEnemy(alliance[choiceAll], orcs)))
-                {
-                    Console.WriteLine($"\tAlliance made a move:\n{ChooseAttacker(alliance, choiceAll).Unit.GetType().Name}1{choiceAll + 1} attacked {ChooseEnemy(alliance[choiceAll], orcs).Unit.GetType().Name}2{orcs.IndexOf(ChooseEnemy(alliance[choiceAll], orcs)) + 1}");
-                    Console.WriteLine($"{ChooseAttacker(alliance, choiceAll).Unit.GetType().Name}1{choiceAll + 1} HP:{ChooseAttacker(alliance, choiceAll).Unit.Hp}\t{ChooseEnemy(alliance[choiceAll], orcs).Unit.GetType().Name}2{orcs.IndexOf(ChooseEnemy(alliance[choiceAll], orcs)) + 1} HP:{ChooseEnemy(alliance[choiceAll], orcs).Unit.Hp}");
-                }
-                else
-                    Console.WriteLine("1");
+                choice = rnd.Next(alliance.Count);
+                enemy = ChooseEnemy(alliance[choice], orcs);
+                warrior = alliance[choice];
+                enemyId = orcs.IndexOf(enemy) + 1;
+                allianceId = 1;
+                orcsId = 2;
+
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write($"\n\tAlliance");
             }
             else
             {
-                if (HitEnemy(ChooseAttacker(orcs, choiceOrc), ChooseEnemy(orcs[choiceOrc], alliance)))
-                {
-                    Console.WriteLine($"\tOrcs made a move:\n{ChooseAttacker(orcs, choiceOrc).Unit.GetType().Name}2{choiceOrc + 1} attacked {ChooseEnemy(orcs[choiceOrc], alliance).Unit.GetType().Name}1{alliance.IndexOf(ChooseEnemy(orcs[choiceOrc], alliance)) + 1}");
-                    Console.WriteLine($"{ChooseAttacker(orcs, choiceOrc).Unit.GetType().Name}2{choiceOrc + 1} HP:{ChooseAttacker(orcs, choiceOrc).Unit.Hp}\t{ChooseEnemy(orcs[choiceOrc], alliance).Unit.GetType().Name}1{alliance.IndexOf(ChooseEnemy(orcs[choiceOrc], alliance)) + 1} HP:{ChooseEnemy(orcs[choiceOrc], alliance).Unit.Hp}");
-                }
-                else
-                    Console.WriteLine("1");
+                choice = rnd.Next(orcs.Count);
+                enemy = ChooseEnemy(orcs[choice], alliance);
+                warrior = orcs[choice];
+                enemyId = alliance.IndexOf(enemy) + 1;
+                allianceId = 2;
+                orcsId = 1;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write($"\n\tOrcs");
             }
+
+            Console.Write($" made a move:\n{warrior.GetType().Name}{allianceId}{choice + 1} attacked {enemy.GetType().Name}{orcsId}{enemyId} ");
+            if (HitAnEnemy(warrior, enemy))
+                Console.WriteLine("successfully");
+            else
+                Console.WriteLine("not successful");
+            Console.WriteLine($"{warrior.GetType().Name}{allianceId}{choice + 1} HP:{warrior.Hp}\t{enemy.GetType().Name}{orcsId}{enemyId} HP:{enemy.Hp}");
+
+            Console.ResetColor();
 
             roundCounter++;
         }
 
-        static Team ChooseAttacker(List<Team> team, int choice)
+        static bool HitAnEnemy(Unit warrior, Unit enemy)
         {
-            if (team[choice].Unit.IsDead == false)
-                return team[choice];
-            if (team[0].Unit.IsDead == false)
-                return team[0];
-            else if (team[1].Unit.IsDead == false)
-                return team[1];
-            else if (team[2].Unit.IsDead == false)
-                return team[2];
-
-            return team[2];
+            Random rnd = new Random();
+            int hitChance = rnd.Next(100);
+            if (hitChance > enemy.EvadeChance)
+            {
+                enemy.Hp -= warrior.Damage;
+                return true;
+            }
+            else
+                return false;
         }
-        static Team ChooseEnemy(Team alliance, List<Team> team)
+
+        static Unit ChooseEnemy(Unit alliance, List<Unit> team)
         {
-            int it = 0;
             foreach (var item in team)
             {
-                if (item.Unit.GetType().Equals(alliance.Unit.GetType()) && item.Unit.IsDead == false)
+                if (item.GetType().Equals(alliance.GetType()))
                 {
                     return item;
                 }
-                else if (it == 2 && item.Unit.IsDead == false)
-                    return item;
-                it++;
             }
 
-            return new Team();
+            Random rnd = new Random();
+            int choice = rnd.Next(team.Count);
+
+            return team[choice];
         }
 
-        static void RemoveDeadHeroes(List<Team> alliance, List<Team> orcs)
+        static void RemoveDeadHeroes(List<Unit> alliance, List<Unit> orcs)
         {
             for (int i = 0; i < alliance.Count; i++)
             {
-                if (alliance[i].Unit.IsDead == true)
+                if (alliance[i].IsDead == true)
                     alliance.RemoveAt(i);
             }
             for (int i = 0; i < orcs.Count; i++)
             {
-                if (orcs[i].Unit.IsDead == true)
+                if (orcs[i].IsDead == true)
                     orcs.RemoveAt(i);
             }
         }
 
-        static bool HitEnemy(Team attacker, Team defender)
+        static bool IsGameOver(List<Unit> alliance, List<Unit> orcs, out int a)
         {
-            if (attacker.Unit.Hp != 0)
-                defender.Unit.Hp -= attacker.Unit.Damage;
-            else
-                return false;
-
-            return true;
-        }
-
-        static bool IsGameOver(List<Team> alliance, List<Team> orcs, out int a)
-        {
-            int cond = 0;
-            foreach (var item in alliance)
-            {
-                if (item.Unit.IsDead == true)
-                {
-                    cond++;
-                }
-            }
-            if (cond == 3)
-            {
-                a = 1;
-                return true;
-            }
-
-            cond = 0;
-            foreach (var item in orcs)
-            {
-                if (item.Unit.IsDead == true)
-                {
-                    cond++;
-                }
-            }
-            if (cond == 3)
+            if (alliance.Count == 0)
             {
                 a = 2;
                 return true;
             }
-
-            a = 0;
+            else if (orcs.Count == 0)
+            {
+                a = 1;
+                return true;
+            }
+            else if (alliance.Count == 0 && orcs.Count == 0)
+            {
+                a = 3;
+                return true;
+            }
+            a = 3;
             return false;
         }
 
-        static void UpdateHeroStatus(List<Team> alliance, List<Team> orcs)
+        static void GenerateTeams(List<Unit> alliance, List<Unit> orcs)
         {
-            foreach (var item in alliance)
+            Random rnd = new Random();
+
+            for (int i = 0; i < 2; i++)
             {
-                if (item.Unit.Hp == 0)
-                    item.Unit.IsDead = true;
-            }
-            foreach (var item in orcs)
-            {
-                if (item.Unit.Hp == 0)
-                    item.Unit.IsDead = true;
+                for (int j = 0; j < 3; j++)
+                {
+                    int choice = rnd.Next(3);
+                    switch (choice)
+                    {
+                        case 0:
+                            if (i == 0)
+                                alliance.Add(new Swordman());
+                            else
+                                orcs.Add(new Swordman());
+                            break;
+                        case 1:
+                            if (i == 0)
+                                alliance.Add(new Archer());
+                            else
+                                orcs.Add(new Archer());
+                            break;
+                        case 2:
+                            if (i == 0)
+                                alliance.Add(new Mage());
+                            else
+                                orcs.Add(new Mage());
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
         }
     }
-
-
-
 }
