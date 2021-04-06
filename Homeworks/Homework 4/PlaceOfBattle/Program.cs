@@ -22,8 +22,6 @@ namespace PlaceOfBattle
             pressedKey = Console.ReadKey();
             Console.Clear();
 
-
-
             while (pressedKey.Key != ConsoleKey.Escape && pressedKey.Key == ConsoleKey.Spacebar && !IsGameOver(alliance, orcs, out whichTeamWon))
             {
                 Console.Clear();
