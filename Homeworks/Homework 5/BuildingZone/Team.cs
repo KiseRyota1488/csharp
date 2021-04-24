@@ -8,7 +8,6 @@ namespace BuildingZone
     {
         Worker worker = new Worker();
         TeamLeader teamLeader = new TeamLeader();
-        List<Type> buildedParts = new List<Type>();
 
         public void Building()
         {
@@ -16,15 +15,14 @@ namespace BuildingZone
 
             for (int i = 0; i < 11; i++)
             {
-                // потрібно масив в якому будуть класи + викликатися getpart
-
+                if (i == 0)
+                    
 
                 worker.currentPart = teamLeader.lastPart;
 
                 teamLeader.Working();
                 worker.Working();
 
-                buildedParts.Add(teamLeader.lastPart);
             }
         }
 
