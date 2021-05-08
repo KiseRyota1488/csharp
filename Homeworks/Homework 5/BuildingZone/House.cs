@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuildingZone
 {
+    public delegate void BuildPart();
     public enum Material
     {
         glass = 1,
@@ -14,7 +15,8 @@ namespace BuildingZone
     }
     public class House
     {
-        public void DrawBasement()
+        BuildPart buildPart;
+        static void DrawBasement()
         {
             for (int i = 0; i < 11; i++)
             {
@@ -26,7 +28,7 @@ namespace BuildingZone
             }
         }
 
-        public void DrawWall()
+        static void DrawWall()
         {
             for (int i = 6; i < 11; i++)
             {
@@ -39,7 +41,7 @@ namespace BuildingZone
                 }
             }
         }
-        public void DrawRoof()
+        static void DrawRoof()
         {
             bool chSideHap = false;
             int y = 5;
@@ -68,19 +70,63 @@ namespace BuildingZone
             }
         }
 
-        public void DrawWindow()
+        static void DrawWindow()
         {
-            for (int i = 3; i < 6; i++)
+            for (int i = 2; i < 5; i++)
             {
                 for (int j = 7; j < 10; j++)
                 {
 
                     Console.SetCursorPosition(i, j);
                     
-                    //if(i != 4 && j != 8)
+                    if(i == 3 && j == 8)
+                        Console.Write(" ");
+                    else
                         Console.Write("*");
                 }
             }
+        }
+        static void DrawDoor()
+        {
+            for (int i = 7; i < 10; i++)
+            {
+                for (int j = 7; j < 11; j++)
+                {
+
+                    Console.SetCursorPosition(i, j);
+
+                    if (i == 8 && (j >= 8 && j <= 10))
+                        Console.Write(" ");
+                    else
+                        Console.Write("*");
+                }
+            }
+        }
+
+        public void AddBasement()
+        {
+            buildPart += DrawBasement;
+        }
+        public void AddWall()
+        {
+            buildPart += DrawWall;
+        }
+        public void AddRoof()
+        {
+            buildPart += DrawRoof;
+        }
+        public void AddWindow()
+        {
+            buildPart += DrawWindow;
+        }
+        public void AddDoor()
+        {
+            buildPart += DrawDoor;
+        }
+
+        public void DrawHouse()
+        {
+            buildPart.Invoke();
         }
     }
 }

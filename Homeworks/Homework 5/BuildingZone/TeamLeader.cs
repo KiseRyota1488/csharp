@@ -23,7 +23,7 @@ namespace BuildingZone
             int mat = rnd.Next(3) + 1;
             part = shouldBuild[It];
             curMat = (Material)mat;
-            //Console.WriteLine($"Team leader {part.GetPart()} {part.GetMaterial(curMat)}");
+            Console.WriteLine($"Team leader {part.GetPart()} {part.GetMaterial(curMat)}");
             It++;
         }
     }

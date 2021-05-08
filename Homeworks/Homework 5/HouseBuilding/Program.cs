@@ -15,14 +15,11 @@ namespace HouseBuilding
         static void Main(string[] args)
         {
             Team workersTeam = new Team();
-            House house = new House();
+            
 
             workersTeam.Building();
 
-            house.DrawBasement();
-            house.DrawWall();
-            house.DrawRoof();
-            house.DrawWindow();
+            
 
             Console.SetCursorPosition(0, 15);
         }

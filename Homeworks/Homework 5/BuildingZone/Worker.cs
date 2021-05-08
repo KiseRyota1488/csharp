@@ -12,7 +12,7 @@ namespace BuildingZone
         public Material mat;
         public void Working()
         {
-            //Console.WriteLine($"Worker {part.GetPart()} {part.GetMaterial(mat)}");
+            Console.WriteLine($"Worker {part.GetPart()} {part.GetMaterial(mat)}");
         }
     }
 }
