@@ -4,17 +4,27 @@ using System.Collections.Generic;
 
 namespace HouseBuilding
 {
+    enum Material
+    {
+        wooden = 1,
+        glass,
+        metallic
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            TeamLeader tl = new TeamLeader() { lastPart = new House().GetType() };
+            Team workersTeam = new Team();
+            House house = new House();
 
-            tl.Working();
+            workersTeam.Building();
 
-            Team t = new Team();
+            house.DrawBasement();
+            house.DrawWall();
+            house.DrawRoof();
+            house.DrawWindow();
 
-            t.Building();
+            Console.SetCursorPosition(0, 15);
         }
     }
 }

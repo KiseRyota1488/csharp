@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace BuildingZone
 {
-    public class Roof
+    public class Roof : IPart
     {
+        public string GetPart()
+        {
+            return $"is working on {GetType().Name.ToLower()}";
+        }
+        public string GetMaterial(Material mat)
+        {
+            return $" | brick";
+        }
     }
 }

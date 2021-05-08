@@ -8,9 +8,13 @@ namespace BuildingZone
 {
     public class Basement : IPart
     {
-        public void GetPart()
+        public string GetPart()
         {
-            Console.WriteLine($"Workers are working on {GetType().Name.ToLower()}");
+            return $"is working on {GetType().Name.ToLower()}";
+        }
+        public string GetMaterial(Material mat)
+        {
+            return $" | brick";
         }
     }
 }

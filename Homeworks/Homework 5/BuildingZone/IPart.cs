@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BuildingZone
 {
-    interface IPart
+    public interface IPart
     {
-        void GetPart();
+        string GetPart();
+        string GetMaterial(Material mat);
     }
 }

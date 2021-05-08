@@ -8,10 +8,11 @@ namespace BuildingZone
 {
     class Worker : IWorker
     {
-        public Type currentPart { get; set; }
+        public IPart part;
+        public Material mat;
         public void Working()
         {
-           Console.WriteLine($"Building {currentPart.Name.ToLower()} part");
+            //Console.WriteLine($"Worker {part.GetPart()} {part.GetMaterial(mat)}");
         }
     }
 }

@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace BuildingZone
 {
-    public class Door : House, IPart
+    
+    public class Door : IPart
     {
-        public void GetPart()
+        public string GetPart()
         {
-            Console.WriteLine(123);
+            return $"is working on {GetType().Name.ToLower()}";
+        }
+        public string GetMaterial(Material mat)
+        {
+            
+            return $" | {mat}";
         }
     }
 }
