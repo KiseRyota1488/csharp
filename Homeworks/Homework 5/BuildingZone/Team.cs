@@ -20,7 +20,7 @@ namespace BuildingZone
                 Console.SetCursorPosition(0, 15);
                 Console.WriteLine("Press SPACE to continue building");
                 Console.ReadKey();
-                Console.Clear();
+
                 Console.SetCursorPosition(0, 12);
                 teamLeader.Working();
                 
