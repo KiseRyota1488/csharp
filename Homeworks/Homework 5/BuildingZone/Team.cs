@@ -16,10 +16,10 @@ namespace BuildingZone
             int builderIt = 0;
             for (int i = 0; i < 11; i++)
             {
-                
                 Console.SetCursorPosition(0, 15);
                 Console.WriteLine("Press SPACE to continue building");
                 Console.ReadKey();
+                Console.Clear();
 
                 Console.SetCursorPosition(0, 12);
                 teamLeader.Working();
