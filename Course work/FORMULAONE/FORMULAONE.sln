@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacePeleton", "RacePeleton\RacePeleton.csproj", "{CAC30251-97B1-4246-9772-611A3D20220D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacingStaff", "Car\RacingStaff.csproj", "{5A7CF7EA-DD41-4A19-AC50-FFFB6FDA58FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAC30251-97B1-4246-9772-611A3D20220D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC30251-97B1-4246-9772-611A3D20220D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC30251-97B1-4246-9772-611A3D20220D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC30251-97B1-4246-9772-611A3D20220D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A7CF7EA-DD41-4A19-AC50-FFFB6FDA58FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A7CF7EA-DD41-4A19-AC50-FFFB6FDA58FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A7CF7EA-DD41-4A19-AC50-FFFB6FDA58FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A7CF7EA-DD41-4A19-AC50-FFFB6FDA58FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD934290-DF60-4279-8273-94CD5C61A1AF}
+	EndGlobalSection
+EndGlobal
