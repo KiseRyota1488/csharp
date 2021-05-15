@@ -12,6 +12,7 @@ namespace RacingStaff
         public string LastName { get; set; }
         public int MaxSpeed { get; set; }
         public int MinSpeed { get; set; }
+        public int TeamId { get; set; }
 
 
         [NonSerialized]
@@ -60,13 +61,14 @@ namespace RacingStaff
         }
 
         
-        public Bolide(int number, string name, string lastName, int maxSpeed, int minSpeed)
+        public Bolide(int number, string name, string lastName, int maxSpeed, int minSpeed, int teamId)
         {
             Number = number;
             Name = name;
             LastName = lastName;
             MaxSpeed = maxSpeed;
             MinSpeed = minSpeed;
+            TeamId = teamId;
 
             LapsCounter = 0;
             CurrentPosition = 0;
@@ -80,9 +82,11 @@ namespace RacingStaff
             CurrentSpeed = rnd.Next((MaxSpeed - MinSpeed)) + MinSpeed;
         }
 
+        
+
         public override string ToString()
         {
-            return $"No: {Number} {Name} {LastName} Speed: {CurrentSpeed} Lap: {LapsCounter / 36:F2}";
+            return $"{Number} {Name} {LastName} \tSpeed: {CurrentSpeed} \tLap: {LapsCounter / 36:F1}";
         }
     }
 }

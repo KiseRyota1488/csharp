@@ -3,14 +3,48 @@
     "Number": 44,
     "Name": "Lewis",
     "LastName": "Hamilton",
-    "MaxSpeed": 345,
-    "MinSpeed": 300
+    "MaxSpeed": 355,
+    "MinSpeed": 312,
+    "TeamId": 1
   },
   {
     "Number": 77,
     "Name": "Valtteri",
     "LastName": "Bottas",
+    "MaxSpeed": 354,
+    "MinSpeed": 307,
+    "TeamId": 1
+  },
+  {
+    "Number": 33,
+    "Name": "Max",
+    "LastName": "Verstappen",
+    "MaxSpeed": 350,
+    "MinSpeed": 313,
+    "TeamId": 2
+  },
+  {
+    "Number": 16,
+    "Name": "Charles",
+    "LastName": "Leclerc",
+    "MaxSpeed": 342,
+    "MinSpeed": 314,
+    "TeamId": 3
+  },
+  {
+    "Number": 55,
+    "Name": "Carlos",
+    "LastName": "Sainz Jr",
+    "MaxSpeed": 351,
+    "MinSpeed": 303,
+    "TeamId": 3
+  },
+  {
+    "Number": 31,
+    "Name": "Esteban",
+    "LastName": "Ocon Jr",
     "MaxSpeed": 345,
-    "MinSpeed": 312
+    "MinSpeed": 310,
+    "TeamId": 4
   }
 ]

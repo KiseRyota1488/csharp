@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RacingStaff
 {
     public class Race
     {
-        public Bolide[] cars = new Bolide[2];
+        public List<Bolide> cars = new List<Bolide>();
+        public List<Bolide> eliminated = new List<Bolide>();
         public Track[] track = new Track[36]
         {
             new Track(15,3),
@@ -51,11 +51,16 @@ namespace RacingStaff
             new Track(13,3),
         };
 
-
+        public ConsoleColor[] teamColors = new ConsoleColor[4];
 
         public void SetupTrack()
         {
-            for (int i = 0; i < cars.Length; i++)
+            teamColors[0] = ConsoleColor.DarkGray;
+            teamColors[1] = ConsoleColor.DarkCyan;
+            teamColors[2] = ConsoleColor.Red;
+            teamColors[3] = ConsoleColor.Blue;
+
+            for (int i = 0; i < cars.Count; i++)
                 while (!AddCar(cars[i])) ;
         }
 
@@ -75,11 +80,45 @@ namespace RacingStaff
                 return false;
         }
 
+        public void RollError()
+        {
+            Random rnd = new Random();
+
+            for (int i = 0; i < cars.Count; i++)
+            {
+                int tmpRnd = rnd.Next(1, 10000);
+
+                if (tmpRnd == 1)
+                {
+                    Clear(0,0,85,50);
+
+                    Console.SetCursorPosition(1, 17);
+                    Console.WriteLine($"{cars[i].Name} {cars[i].LastName} got puncture");
+                    eliminated.Add(cars[i]);
+                    cars.Remove(cars[i]);
+
+                    break;
+                }
+                else if (tmpRnd == 9999)
+                {
+                    Clear(0,0,85,50);
+
+                    Console.SetCursorPosition(1, 17);
+                    Console.WriteLine($"{cars[i].Name} {cars[i].LastName} got engine issue");
+                    eliminated.Add(cars[i]);
+                    cars.Remove(cars[i]);
+
+                    break;
+                }
+            }
+
+        }
+
         public async Task GettingDrivers()
         {
             using (FileStream fs = new FileStream(@"..\..\..\..\drivers.json", FileMode.OpenOrCreate))
             {
-                cars = await JsonSerializer.DeserializeAsync<Bolide[]>(fs);
+                cars = await JsonSerializer.DeserializeAsync<List<Bolide>>(fs);
             }
         }
 
@@ -97,17 +136,27 @@ namespace RacingStaff
             Console.WriteLine("Leaderboard:");
 
             SortByLaps();
-            for (int i = 0; i < cars.Length; i++)
+            int i;
+            for (i = 0; i < cars.Count; i++)
             {
                 Console.SetCursorPosition(35, 3 + i);
 
-                Console.WriteLine(cars[i]);
+                Console.WriteLine($"P{i + 1}: {cars[i]}");
+            }
+
+            Console.SetCursorPosition(35, 5 + i);
+            Console.WriteLine("Eliminated:");
+            for (int j = 0; j < eliminated.Count; j++, i++)
+            {
+                Console.SetCursorPosition(35, 7 + i);
+
+                Console.WriteLine($"P{j + 1}: {eliminated[j]}");
             }
         }
         public void PrintDrivers()
         {
 
-            for (int i = 0; i < cars.Length; i++)
+            for (int i = 0; i < cars.Count; i++)
             {
                 cars[i].ChangeCurSpeed();
                 for (int j = 0; j < track.Length; j++)
@@ -115,14 +164,34 @@ namespace RacingStaff
                     if (j == cars[i].CurrentPosition)
                     {
                         Console.SetCursorPosition(track[j].X, track[j].Y);
+
+                        switch (cars[i].TeamId)
+                        {
+                            case 1:
+                                Console.ForegroundColor = teamColors[0];
+                                break;
+                            case 2:
+                                Console.ForegroundColor = teamColors[1];
+                                break;
+                            case 3:
+                                Console.ForegroundColor = teamColors[2];
+                                break;
+                            case 4:
+                                Console.ForegroundColor = teamColors[3];
+                                break;
+
+                            default:
+                                break;
+                        }
                         Console.Write(cars[i].Number);
+                        Console.ResetColor();
                     }
                 }
             }
         }
         public void ChangePosition()
         {
-            for (int i = 0; i < cars.Length; i++)
+            for (int i = 0; i < cars.Count; i++)
             {
                 if (cars[i].CurrentSpeed < (((360 - 280) / 2) + 280))
                 {
@@ -140,7 +209,7 @@ namespace RacingStaff
         }
         void SwapPosCond(int currentPos, int curInd)
         {
-            for (int i = 0; i < cars.Length; i++)
+            for (int i = 0; i < cars.Count; i++)
                 if (cars[i].CurrentPosition == currentPos && i != curInd)
                 {
                     if (cars[i].CurrentSpeed > cars[curInd].CurrentSpeed)
@@ -158,37 +227,72 @@ namespace RacingStaff
 
         void SortByLaps()
         {
-            int max = -1;
-            for (int i = 0; i < cars.Length; i++)
+            for (int i = 0; i < cars.Count; i++)
             {
-                if (i < cars.Length - 1 && cars[i].LapsCounter > cars[i + 1].LapsCounter)
-                    Swap(ref cars[i], ref cars[i + 1]);
-                else if (i < cars.Length)
+                if (i < cars.Count - 1 && cars[i].LapsCounter > cars[i + 1].LapsCounter)
+                {
+                    Bolide temp;
+                    temp = cars[i];
+                    cars[i] = cars[i + 1];
+                    cars[i + 1] = temp;
+                    Overtake(cars[i], cars[i + 1]);
+                }
+                else if (i < cars.Count)
                     ReverseSort();
             }
-                
+
         }
 
         void ReverseSort()
         {
-            for (int i = cars.Length-1; i > 0; i--)
-            {
-                for (int j = i-1; j >= 0; j--)
-                {
+            for (int i = cars.Count - 1; i > 0; i--)
+                for (int j = i - 1; j >= 0; j--)
                     if (cars[i].LapsCounter > cars[j].LapsCounter)
-                        Swap(ref cars[i], ref cars[j]);
-                }
-
-
-            }
+                    {
+                        Bolide temp;
+                        temp = cars[i];
+                        cars[i] = cars[j];
+                        cars[j] = temp;
+                        Overtake(cars[i], cars[j]);
+                    }
         }
-
-        void Swap<T>(ref T lhs,ref T rhs)
+        public bool GameOverCond()
         {
-            T temp;
-            temp = lhs;
-            lhs = rhs;
-            rhs = temp;
+            foreach (var item in cars)
+            {
+                if (item.LapsCounter / 36 >= 36)
+                    return true;
+            }
+            return false;
+        }
+        public Bolide GetWinner()
+        {
+            if (GameOverCond())
+            {
+                return cars[0];
+            }
+
+            return (Bolide)new object();
+        }
+        public void Overtake(Bolide car1, Bolide car2)
+        {
+            Console.SetCursorPosition(1, 15);
+            for (int i = 0; i < 35; i++)
+                Console.Write(" ");
+
+            Console.SetCursorPosition(1, 15);
+            Console.WriteLine($"{car2.Name} overtaked {car1.Name}");
+        }
+        static void Clear(int x, int y, int width, int height)
+        {
+            int curTop = Console.CursorTop;
+            int curLeft = Console.CursorLeft;
+            for (; height > 0;)
+            {
+                Console.SetCursorPosition(x, y + --height);
+                Console.Write(new string(' ', width));
+            }
+            Console.SetCursorPosition(curLeft, curTop);
         }
     }
 }
