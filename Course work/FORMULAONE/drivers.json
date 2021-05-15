@@ -3,12 +3,14 @@
     "Number": 44,
     "Name": "Lewis",
     "LastName": "Hamilton",
-    "CurrentSpeed": 335
+    "MaxSpeed": 345,
+    "MinSpeed": 300
   },
   {
     "Number": 77,
     "Name": "Valtteri",
     "LastName": "Bottas",
-    "CurrentSpeed": 322
+    "MaxSpeed": 345,
+    "MinSpeed": 312
   }
 ]
