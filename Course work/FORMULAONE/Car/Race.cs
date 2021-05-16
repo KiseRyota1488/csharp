@@ -90,7 +90,7 @@ namespace RacingStaff
 
                 if (tmpRnd == 1)
                 {
-                    Clear(0,0,85,50);
+                    Clear(0,0,100,50);
 
                     Console.SetCursorPosition(1, 17);
                     Console.WriteLine($"{cars[i].Name} {cars[i].LastName} got puncture");
@@ -101,7 +101,7 @@ namespace RacingStaff
                 }
                 else if (tmpRnd == 9999)
                 {
-                    Clear(0,0,85,50);
+                    Clear(0,0,100,50);
 
                     Console.SetCursorPosition(1, 17);
                     Console.WriteLine($"{cars[i].Name} {cars[i].LastName} got engine issue");
@@ -283,7 +283,7 @@ namespace RacingStaff
             Console.SetCursorPosition(1, 15);
             Console.WriteLine($"{car2.Name} overtaked {car1.Name}");
         }
-        static void Clear(int x, int y, int width, int height)
+        public void Clear(int x, int y, int width, int height)
         {
             int curTop = Console.CursorTop;
             int curLeft = Console.CursorLeft;

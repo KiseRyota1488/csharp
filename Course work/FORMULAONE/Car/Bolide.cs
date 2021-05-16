@@ -13,6 +13,7 @@ namespace RacingStaff
         public int MaxSpeed { get; set; }
         public int MinSpeed { get; set; }
         public int TeamId { get; set; }
+        public int Points { get; set; } = 0;
 
 
         [NonSerialized]
@@ -72,6 +73,7 @@ namespace RacingStaff
 
             LapsCounter = 0;
             CurrentPosition = 0;
+            Points = 0;
 
             ChangeCurSpeed();
         }
