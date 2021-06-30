@@ -34,7 +34,7 @@ namespace RacingStaff
                 race.ChangePosition();
 
 
-                //Thread.Sleep(300);
+                Thread.Sleep(300);
                 race.RollError();
             }
 
